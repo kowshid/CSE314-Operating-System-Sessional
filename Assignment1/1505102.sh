@@ -14,14 +14,14 @@ submissions=`find -name "*.zip" | cut -d '_' -f 5 | cut -d '.' -f 1`
 #find -name "*.zip" | cut -d '_' -f 5 | cut -d '.' -f 1 > submitted2.txt
 #sort -n submitted2.txt > submitted.txt
 total=`find -name "*.zip" | cut -d '_' -f 5 | cut -d '.' -f 1 | wc -l`
-echo $total
+#echo $total
 for roll in $ids
 do
     count=$((1))
     for i in $submissions
     do
         if [ $roll -eq $i ]; then
-	        echo "match $i $roll"
+	        #echo "match $i $roll"
             break
         fi
         (( count++ ))
@@ -30,6 +30,7 @@ do
     if [ $count -gt $total ]; then
     	echo "not match $roll"
         echo $roll >> absent.txt
+        echo "$roll 0" >> marks.txt 
     fi
 done
 #while read -r line; do
@@ -46,4 +47,6 @@ done
 #		#x=1
 #	fi
 #done < ids.txt
-
+mkdir Output
+mkdir Output/Extra
+find -name "*.zip" | cut -d / -f 2 > file.txt
