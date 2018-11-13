@@ -7,7 +7,7 @@ cut -d , -f 1 CSE_322.csv | tr -d "\\t\"" > ids.txt
 cut -d , -f 2 CSE_322.csv > names.txt
 
 find -name "*.zip" | cut -d '_' -f 5 | cut -d '.' -f 1 > submitted2.txt
-sort -n submitted2.txt> submitted.txt
+sort -n submitted2.txt > submitted.txt
 
 ids=`cut -d , -f 1 CSE_322.csv | tr -d "\\t\""`
 submissions=`find -name "*.zip" | cut -d '_' -f 5 | cut -d '.' -f 1`
@@ -50,3 +50,36 @@ done
 mkdir Output
 mkdir Output/Extra
 find -name "*.zip" | cut -d / -f 2 > file.txt
+
+while read -r line; do
+	mkdir Output/temp 
+	unzip "$line" -d Output/temp
+	cd Output/temp
+	count=$((1))
+	for i in $ls
+	do
+		(( count++ ))
+	done
+	folder=`ls`
+	cd ..
+	cd ..
+	if [ $count -eq 1 ] ; then
+		echo "n = $count"			
+		if grep -q "$folder" CSE_322.csv; then
+			#echo "I'm in mark"
+			echo "$folder 10" >> marks.txt
+		fi
+
+		cp -r Output/temp/"$folder" Output/"$folder"
+	else
+		echo "$folder 0" >> marks.txt
+		cp -r Output/temp/"$folder" Output/Extra/"$folder"
+	fi
+
+	#cd ..
+	#cd ..
+	rm -r Output/temp
+	rm -r "$line"
+done < file.txt
+
+sort marks.txt > marks2.txt
