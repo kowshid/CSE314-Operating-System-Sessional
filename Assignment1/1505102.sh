@@ -29,7 +29,7 @@ do
     #echo $
     if [ $count -gt $total ]; then
     	echo "not match $roll"
-        echo $roll >> absent.txt
+        echo $roll >> Absents.txt
         echo "$roll 0" >> marks.txt 
     fi
 done
@@ -82,4 +82,6 @@ while read -r line; do
 	rm -r "$line"
 done < file.txt
 
-sort marks.txt > marks2.txt
+sort marks.txt > Marks.txt
+rm marks.txt
+rm submitted2.txt
