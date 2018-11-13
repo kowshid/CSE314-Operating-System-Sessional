@@ -68,9 +68,9 @@ while read -r line; do
 		if grep -q "$folder" CSE_322.csv; then
 			#echo "I'm in mark"
 			echo "$folder 10" >> marks.txt
+			cp -r Output/temp/"$folder" Output/"$folder"
 		fi
-
-		cp -r Output/temp/"$folder" Output/"$folder"
+		
 	else
 		echo "$folder 0" >> marks.txt
 		cp -r Output/temp/"$folder" Output/Extra/"$folder"
