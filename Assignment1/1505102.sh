@@ -8,6 +8,7 @@ cut -d , -f 2 CSE_322.csv > names.txt
 
 find -name "*.zip" | cut -d '_' -f 5 | cut -d '.' -f 1 > submitted2.txt
 sort -n submitted2.txt > submitted.txt
+rm submitted2.txt
 
 ids=`cut -d , -f 1 CSE_322.csv | tr -d "\\t\""`
 submissions=`find -name "*.zip" | cut -d '_' -f 5 | cut -d '.' -f 1`
@@ -29,22 +30,21 @@ do
     #echo $
     if [ $count -gt $total ]; then
     	echo "not match $roll"
-        echo $roll >> Absents.txt
+        echo $roll >> absents.txt
         echo "$roll 0" >> marks.txt 
     fi
 done
 #while read -r line; do
-#	bool=0
+#	bool="false"
 #	while read -r roll; do
 #		#echo $roll
 #		if [ $line=$roll ]; then
-#			bool=1
+#			bool="true"
 #			echo $roll
 #		fi
 #	done < submitted.txt
-#	if [ bool ]; then
-#		echo "absent $line" 
-#		#x=1
+#	if [ bool="false" ]; then
+#		echo "absent $line"
 #	fi
 #done < ids.txt
 mkdir Output
@@ -83,5 +83,6 @@ while read -r line; do
 done < file.txt
 
 sort marks.txt > Marks.txt
+sort absents.txt > Absents.txt
 rm marks.txt
-rm submitted2.txt
+rm absents.txt
