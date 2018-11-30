@@ -1,10 +1,10 @@
-#include<stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include<pthread.h>
-#include<semaphore.h>
-#include<queue>
-#include<unistd.h>
+#include <pthread.h>
+#include <semaphore.h>
+#include <queue>
+#include <unistd.h>
 
 using namespace std;
 
@@ -48,15 +48,13 @@ void * vanilla(void * arg)
 		pthread_mutex_lock(&q1Lock);
 
 		q1.push(0);
-
-		pthread_mutex_unlock(&q1Lock);
-
-		printf("\nVanilla produced\n");
+		printf("\nVanilla cake baked\n");
 		printf("Items in queue 1: %d\n", q1.size());
 
+		pthread_mutex_unlock(&q1Lock);
 		sem_post(&q1Occupied);
 
-		sleep(1);
+		sleep(rand()%4+1);
 	}
 }
 
@@ -71,11 +69,10 @@ void * chocolate(void * arg)
 
 		q1.push(1);
 
-		pthread_mutex_unlock(&q1Lock);
-
-		printf("\nChocolate produced\n");
+		printf("\nChocolate cake baked\n");
 		printf("Items in queue 1: %d\n", q1.size());
 
+		pthread_mutex_unlock(&q1Lock);
 		sem_post(&q1Occupied);
 
 		sleep(rand()%4+1);
@@ -102,12 +99,10 @@ void * decorator(void * arg)
 			pthread_mutex_lock(&q23Lock);
 
 			q2.push(cake);
-
-			pthread_mutex_unlock(&q23Lock);
-
 			printf("\nDecorated a vanilla cake\n");
 			printf("Items in queue 2: %d\n", q2.size());
 
+			pthread_mutex_unlock(&q23Lock);
 			sem_post(&q2Occupied);
 		}
 
@@ -117,12 +112,10 @@ void * decorator(void * arg)
 			pthread_mutex_lock(&q23Lock);
 
 			q3.push(cake);
-
-			pthread_mutex_unlock(&q23Lock);
-
 			printf("\ndecorated a chocolate cake\n");
 			printf("Items in queue 3: %d\n", q3.size());
 
+			pthread_mutex_unlock(&q23Lock);
 			sem_post(&q3Occupied);
 		}
 
@@ -143,15 +136,13 @@ void * waiter1(void *arg)
 		pthread_mutex_lock(&q23Lock);
 
 		q3.pop();
-
-		pthread_mutex_unlock(&q23Lock);
-
 		printf("\nWaiter 1 served a chocolate cake\n");
 		printf("Items in queue 3: %d\n", q3.size());
 
+		pthread_mutex_unlock(&q23Lock);
 		sem_post(&q3Empty);
 
-		sleep(1);
+		sleep(rand()%4+1);
 	}
 }
 
@@ -165,15 +156,13 @@ void * waiter2(void *arg)
 		pthread_mutex_lock(&q23Lock);
 
 		q2.pop();
-
-		pthread_mutex_unlock(&q23Lock);
-
 		printf("\nWaiter 2 served a vanilla cake\n");
 		printf("Items in queue 2: %d\n", q2.size());
 
+		pthread_mutex_unlock(&q23Lock);
 		sem_post(&q2Empty);
 
-		sleep(1);
+		sleep(rand()%4+1);
 	}
 }
 
